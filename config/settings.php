@@ -5,3 +5,7 @@
  * Date: 31.03.18
  * Time: 14:32
  */
+
+return [
+    'slider_path'=>'slider-cycle'
+];

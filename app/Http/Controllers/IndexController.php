@@ -6,6 +6,7 @@ use App\Menu;
 use App\Repositories\MenusRepository;
 use App\Repositories\SlidersRepository;
 use Illuminate\Http\Request;
+use Config;
 
 class IndexController extends SiteController
 {
@@ -39,7 +40,8 @@ class IndexController extends SiteController
         }
 
         $sliders->transform(function ($item,$key){
-
+            $item->img=Config::get('settings.slider_path').'/'.$item->img;
+            return $item;
         });
 
             return $sliders;
