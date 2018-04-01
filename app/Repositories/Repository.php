@@ -12,10 +12,14 @@ use Config;
 abstract class Repository{
 protected $model;
 
-public function get($select='*',$take=false){
+public function get($select='*',$take=false,$pagination=false){
     $builder=$this->model->select($select);
+
     if($take){
         $builder->take($take);
+    }
+    if($pagination){
+      return $this->check($builder->paginate(Config::get('settings.paginate')));
     }
 
     return  $this->check( $builder->get());
@@ -32,6 +36,7 @@ protected function check($result){
 
         return $item;
     });
+
     return $result;
 }
 
