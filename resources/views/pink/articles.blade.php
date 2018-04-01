@@ -13,7 +13,7 @@
 
 @section('bar')
 
-    {!! $rightBar or ''!!}
+    {!! $rightBar !!}
 
 @endsection
 

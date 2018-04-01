@@ -18,4 +18,14 @@ class ArticlesRepository extends Repository
         $this->model=$articles;
     }
 
+    public function one($alias,$attr=[]){
+        $articles=parent::one($alias,$attr);
+        if($articles && ! empty($attr)){
+
+            $articles->load('comments');
+            $articles->comments->load('user');
+        }
+return $articles;
+    }
+
 }
