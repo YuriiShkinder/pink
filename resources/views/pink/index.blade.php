@@ -10,3 +10,9 @@
     {!! $sliders !!}
 
     @endsection
+
+@section('content')
+
+    {!! $content !!}
+
+@endsection
