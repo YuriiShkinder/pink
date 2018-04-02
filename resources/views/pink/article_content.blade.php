@@ -1,33 +1,32 @@
 <div id="content-single" class="content group">
+
+@if($article)
     <div class="hentry hentry-post blog-big group ">
         <!-- post featured & title -->
+
         <div class="thumbnail">
             <!-- post title -->
-            <h1 class="post-title"><a href="article.html">This is the title of the first article. Enjoy it.</a></h1>
+            <h1 class="post-title"><a href="#">{{$article->title}}</a></h1>
             <!-- post featured -->
             <div class="image-wrap">
-                <img src="images/articles/00212-816x282.jpg" alt="00212" title="00212" />
+                <img src="{{asset(env('THEME'))}}/images/articles/{{$article->img->max}}" alt="00212" title="00212" />
             </div>
             <p class="date">
-                <span class="month">Sep</span>
-                <span class="day">24</span>
+                <span class="month">{{$article->created_at->format('M')}}</span>
+                <span class="day">{{$article->created_at->format('d')}}</span>
             </p>
         </div>
         <!-- post meta -->
         <div class="meta group">
-            <p class="author"><span>by <a href="blog-big-image.html" title="Posts by Nicola Mustone" rel="author">Nicola Mustone</a></span></p>
-            <p class="categories"><span>In: <a href="blog-big-image.html" title="View all posts in Design" rel="category tag">Design</a>, <a href="blog-big-image.html" title="View all posts in Happyness" rel="category tag">Happyness</a>, <a href="blog-big-image.html" title="View all posts in WordPress" rel="category tag">WordPress</a></span></p>
-            <p class="comments"><span><a href="#comments" title="Comment on This is the title of the first article. Enjoy it.">2 comments</a></span></p>
+            <p class="author"><span>by <a href="#" title="{{$article->title}}" rel="author">{{$article->user->name}}</a></span></p>
+            <p class="categories"><span>In: <a href="{{route('articlesCat',['cat_alias'=>$article->category->alias])}}" title="View all posts in {{$article->category->title}}" rel="category tag">{{$article->category->title}}</a> </span></p>
+            <p class="comments"><span><a href="#comments" title="Comment on This is the title of the first article. Enjoy it.">{{count($article->comments) ? count($article->comments) : 0}}{{Lang::choice('ru.comments',count($article->comments))}}</a></span></p>
         </div>
         <!-- post content -->
         <div class="the-content single group">
-            <p>Fusce nec accumsan eros. Aenean ac orci a magna vestibulum posuere quis nec nisi. Maecenas rutrum vehicula condimentum. Donec volutpat nisl ac mauris consectetur gravida.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel vulputate nibh. Pellentesque habitant <strong>morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas.</p>
-            <p>In facilisis ornare arcu, sodales facilisis neque blandit ac. Ut blandit ipsum quis arcu adipiscing <strong>sit amet semper</strong> sem feugiat. Nam sed dapibus arcu. Nullam eleifend molestie lectus. Nullam nec risus purus.</p>
-            <p><span id="more-41"></span></p>
-            <p>Fusce rutrum lectus id nibh ullamcorper aliquet. Pellentesque pretium mauris et augue fringilla non bibendum turpis iaculis. Donec sit amet nunc lorem. Sed fringilla vehicula est at pellentesque. Aenean imperdiet elementum arcu id facilisis. Mauris sed leo eros.</p>
-            <p>Duis nulla purus, malesuada in gravida sed, viverra at elit. Praesent nec purus sem, non imperdiet quam. Praesent tincidunt tortor eu libero scelerisque quis consequat justo elementum. Maecenas aliquet facilisis ipsum, commodo eleifend odio ultrices et. Maecenas arcu arcu, luctus a laoreet et, fermentum vel lectus. Cras consectetur ipsum venenatis ligula aliquam hendrerit. Suspendisse rhoncus hendrerit fermentum. Ut eget rhoncus purus.</p>
-            <p>Cras a tellus eu justo lobortis tristique et nec mauris. Etiam tincidunt tellus ut odio elementum adipiscing. Maecenas cursus dolor sit amet leo elementum ut semper velit lobortis. Pellentesque posue</p>
+        <p>
+            {!! $article->text!!}
+        </p>
             <div class="socials">
                 <h2>love it, share it!</h2>
                 <a href="https://www.facebook.com/sharer.html?u=http%3A%2F%2Fyourinspirationtheme.com%2Fdemo%2Fpinkrio%2F2012%2F09%2F24%2Fthis-is-the-title-of-the-first-article-enjoy-it%2F&amp;t=This+is+the+title+of+the+first+article.+Enjoy+it." class="socials-small facebook-small" title="Facebook">facebook</a>
@@ -43,64 +42,22 @@
     <!-- START COMMENTS -->
     <div id="comments">
         <h3 id="comments-title">
-            <span>2</span> comments
+            <span>{{count($article->comments)}}</span> {{Lang::choice('ru.comments',count($article->comments))}}
         </h3>
+        @if(count($article->comments)> 0)
+
+        @set($com,$article->comments->groupBy('parent_id'))
         <ol class="commentlist group">
-            <li class="comment even depth-1">
-                <div class="comment-container">
-                    <div class="comment-author vcard">
-                        <img alt="" src="images/avatar/unknow.png" class="avatar" height="75" width="75" />
-                        <cite class="fn">Anonymous</cite>
-                    </div>
-                    <!-- .comment-author .vcard -->
-                    <div class="comment-meta commentmetadata">
-                        <div class="intro">
-                            <div class="commentDate">
-                                <a href="#comment-2">
-                                    September 24, 2012 at 1:31 pm</a>
-                            </div>
-                            <div class="commentNumber">#&nbsp;1</div>
-                        </div>
-                        <div class="comment-body">
-                            <p>Hi all, i’m a guest and this is the guest’s awesome comments template!</p>
-                        </div>
-                        <div class="reply group">
-                            <a class="comment-reply-link" href="#respond" onclick="return addComment.moveForm(&quot;comment-2&quot;, &quot;2&quot;, &quot;respond&quot;, &quot;41&quot;)">Reply</a>
-                        </div>
-                        <!-- .reply -->
-                    </div>
-                    <!-- .comment-meta .commentmetadata -->
-                </div>
-                <!-- #comment-##  -->
-            </li>
-            <li class="comment bypostauthor odd">
-                <div class="comment-container">
-                    <div class="comment-author vcard">
-                        <img alt="" src="images/avatar/nicola.jpeg" class="avatar" height="75" width="75" />
-                        <cite class="fn">nicola</cite>
-                    </div>
-                    <!-- .comment-author .vcard -->
-                    <div class="comment-meta commentmetadata">
-                        <div class="intro">
-                            <div class="commentDate">
-                                <a href="#">
-                                    September 24, 2012 at 1:32 pm</a>
-                            </div>
-                            <div class="commentNumber">#&nbsp;2</div>
-                        </div>
-                        <div class="comment-body">
-                            <p>While i’m the author of the post. My comment template is different, something like a “sticky comment”!</p>
-                        </div>
-                        <div class="reply group">
-                            <a class="comment-reply-link" href="#respond" onclick="return addComment.moveForm(&quot;comment-3&quot;, &quot;3&quot;, &quot;respond&quot;, &quot;41&quot;)">Reply</a>
-                        </div>
-                        <!-- .reply -->
-                    </div>
-                    <!-- .comment-meta .commentmetadata -->
-                </div>
-                <!-- #comment-##  -->
-            </li>
+            @foreach($com as $k=>$comments)
+                @if($k!==0)
+                    @break
+                @endif
+                @include(env('THEME').'.comment',['items'=>$comments])
+            @endforeach
+
         </ol>
+
+         @endif
 
         <!-- START TRACKBACK & PINGBACK -->
         <h2 id="trackbacks">Trackbacks and pingbacks</h2>
@@ -110,18 +67,28 @@
         <!-- END TRACKBACK & PINGBACK -->
         <div id="respond">
             <h3 id="reply-title">Leave a <span>Reply</span> <small><a rel="nofollow" id="cancel-comment-reply-link" href="#respond" style="display:none;">Cancel reply</a></small></h3>
-            <form action="sendmail.PHP" method="post" id="commentform">
+            <form action="{{route('comment.store')}}" method="post" id="commentform">
+                @if(!Auth::check())
                 <p class="comment-form-author"><label for="author">Name</label> <input id="author" name="author" type="text" value="" size="30" aria-required="true" /></p>
                 <p class="comment-form-email"><label for="email">Email</label> <input id="email" name="email" type="text" value="" size="30" aria-required="true" /></p>
                 <p class="comment-form-url"><label for="url">Website</label><input id="url" name="url" type="text" value="" size="30" /></p>
+               @endif
                 <p class="comment-form-comment"><label for="comment">Your comment</label><textarea id="comment" name="comment" cols="45" rows="8"></textarea></p>
                 <div class="clear"></div>
+
+
                 <p class="form-submit">
+                    <input type="hidden" name="comment_post_ID" value="{{$article->id}}" id="comment_post_ID">
+                    <input id="comment_parent" type="hidden" name="comment_parent" value="">
+                    {{csrf_field()}}
+
+
                     <input name="submit" type="submit" id="submit" value="Post Comment" />
                 </p>
             </form>
         </div>
         <!-- #respond -->
     </div>
+    @endif
     <!-- END COMMENTS -->
 </div>
