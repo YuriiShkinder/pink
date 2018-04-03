@@ -42,6 +42,11 @@ class SiteController extends Controller
             $rightBar=view(env('THEME').'.rightBar')->with('conten_rightBar',$this->contentRightBar)->render();
             $this->vars=array_add($this->vars,'rightBar',$rightBar);
         }
+
+        if($this->contentLeftBar){
+            $leftBar=view(env('THEME').'.leftBar')->with('content_leftBar',$this->contentLeftBar)->render();
+            $this->vars=array_add($this->vars,'leftBar',$leftBar);
+        }
         $this->vars=array_add($this->vars,'bar',$this->bar);
 
         $footer=view(env('THEME').'.footer')->render();
@@ -55,8 +60,9 @@ class SiteController extends Controller
 
     }
 
-    protected function getMenu(){
+    public function getMenu(){
         $menu=$this->m_rep->get();
+
 
         $mBuilder=\Menu::make('MyNav',function ($m) use ($menu){
             foreach ($menu as $item){
