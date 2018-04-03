@@ -22,3 +22,13 @@ Route::get('/articles/cat/{cat_alias?}',['uses'=>'ArticlesController@index','as'
 Route::resource('comment','CommentController',['only'=>['store']]);
 
 Route::match(['get','post'],'contacts',['uses'=>'ContactsController@index','as'=>'contacts']);
+
+Route::get('login',['uses'=>'Auth\AuthController@showLoginForm']);
+
+Route::post('login',['uses'=>'Auth\AuthController@login']);
+
+Route::get('logout',['uses'=>'Auth\AuthController@logout']);
+
+
+
+
