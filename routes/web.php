@@ -23,12 +23,20 @@ Route::resource('comment','CommentController',['only'=>['store']]);
 
 Route::match(['get','post'],'contacts',['uses'=>'ContactsController@index','as'=>'contacts']);
 
-Route::get('login',['uses'=>'Auth\AuthController@showLoginForm']);
+Route::get('login',['uses'=>'Auth\AuthController@showLoginForm'])->name('login');
 
 Route::post('login',['uses'=>'Auth\AuthController@login']);
 
 Route::get('logout',['uses'=>'Auth\AuthController@logout']);
 
 
+Route::group(['prefix' => 'admin','middleware'=> 'auth'],function() {
+
+    //admin
+    Route::get('/',['uses' => 'Admin\IndexController@index','as' => 'adminIndex']);
+
+    Route::resource('/articles','Admin\ArticlesController',['as'=>'admin']);
+
+});
 
 
