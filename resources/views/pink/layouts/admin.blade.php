@@ -88,6 +88,7 @@
             </div>
         @endif
 
+
         @if (session('status'))
             <div class="box success-box">
                 {{ session('status') }}

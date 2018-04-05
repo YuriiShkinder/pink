@@ -53,6 +53,8 @@ class AuthController extends Controller
     }
 
 
+
+
     public function showLoginForm()
     {
         $view = property_exists($this, 'loginView')

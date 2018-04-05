@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Article;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -26,6 +27,10 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
         $this->pattern('alias','[\w-]+');
+        $this->bind('article',function ($value){
+
+            return Article::where('alias',$value)->first();
+        });
 
     }
 
