@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Article;
+use App\Menu;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -30,6 +31,10 @@ class RouteServiceProvider extends ServiceProvider
         $this->bind('article',function ($value){
 
             return Article::where('alias',$value)->first();
+        });
+
+        $this->bind('menus',function ($value){
+            return Menu::where('alias',$value)->first();
         });
 
     }
