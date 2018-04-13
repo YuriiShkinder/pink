@@ -8,6 +8,8 @@ use App\Permission;
 use App\Policies\ArticlePolicy;
 use App\Policies\MenusPolicy;
 use App\Policies\PermissionPolicy;
+use App\Policies\UserPolicy;
+use App\User;
 use Illuminate\Support\Facades\Gate ;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -21,7 +23,8 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Article::class=>ArticlePolicy::class,
         Permission::class=>PermissionPolicy::class,
-        Menu::class=>MenusPolicy::class
+        Menu::class=>MenusPolicy::class,
+        User::class=>UserPolicy::class
 
     ];
 
