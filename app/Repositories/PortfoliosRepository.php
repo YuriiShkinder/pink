@@ -10,7 +10,9 @@ namespace App\Repositories;
 
 
 use App\Portfolio;
-
+use Gate;
+use Image;
+use Config;
 class PortfoliosRepository extends Repository
 {
  public function __construct(Portfolio $portfolio)
@@ -26,5 +28,62 @@ class PortfoliosRepository extends Repository
      }
      return $portfolio;
  }
+
+    public function addPortfolio($request)
+    {
+        if (Gate::denies('save', $this->model)) {
+            abort(403);
+        }
+
+        $data = $request->except('_token', 'img');
+
+
+        if (empty($data)) {
+            return ['error' => 'нет данных'];
+        }
+
+        if (empty($data['alias'])) {
+            $data['alias'] = $this->transliterate($data['title']);
+        }
+        if ($this->one($data['alias'])) {
+            $request->merge(['alias' => $data['alias']]);
+            $request->flash();
+            return ['error' => 'Занято'];
+        }
+
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+
+            if ($image->isValid()) {
+                $str = str_random(8);
+                $obj = new \stdClass();
+                $obj->mini = $str . '_mini.jpg';
+                $obj->max = $str . '_max.jpg';
+                $obj->path = $str . '.jpg';
+
+                $img = Image::make($image);
+
+
+                $img->fit(Config::get('settings.image')['width'], Config::get('settings.image')['heigth'])
+                    ->save(public_path() . '/' . env('THEME') . '/images/projects/' . $obj->path);
+                $img->fit(Config::get('settings.articles_img')['max']['width'], Config::get('settings.articles_img')['max']['heigth'])
+                    ->save(public_path() . '/' . env('THEME') . '/images/projects/' . $obj->max);
+                $img->fit(Config::get('settings.articles_img')['mini']['width'], Config::get('settings.articles_img')['mini']['heigth'])
+                    ->save(public_path() . '/' . env('THEME') . '/images/projects/' . $obj->mini);
+
+                $data['img'] = json_encode($obj);
+
+                $this->model->fill($data);
+
+                if ($this->model->save()) {
+                    return ['status' => 'Материал добавлен'];
+                }
+
+            }
+        }
+
+
+
+    }
 
 }

@@ -8,7 +8,9 @@ use App\Permission;
 use App\Policies\ArticlePolicy;
 use App\Policies\MenusPolicy;
 use App\Policies\PermissionPolicy;
+use App\Policies\PortfoliosPolicy;
 use App\Policies\UserPolicy;
+use App\Portfolio;
 use App\User;
 use Illuminate\Support\Facades\Gate ;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -24,7 +26,8 @@ class AuthServiceProvider extends ServiceProvider
         Article::class=>ArticlePolicy::class,
         Permission::class=>PermissionPolicy::class,
         Menu::class=>MenusPolicy::class,
-        User::class=>UserPolicy::class
+        User::class=>UserPolicy::class,
+        Portfolio::class=>PortfoliosPolicy::class
 
     ];
 
@@ -52,6 +55,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('VIEW_ADMIN_MENU',function ($user){
             return $user->canDo('VIEW_ADMIN_MENU', FALSE);
+        });
+
+        Gate::define('VIEW_ADMIN_PORTFOLIOS',function ($user){
+            return $user->canDo('VIEW_ADMIN_PORTFOLIOS', FALSE);
         });
 
 

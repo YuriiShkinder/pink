@@ -43,6 +43,8 @@ Route::group(['prefix' => 'admin','middleware'=> 'auth'],function() {
 
     Route::resource('/users','Admin\UsersController',['as'=>'admin']);
 
+    Route::resource('/portfolios','Admin\PortfoliosController',['as'=>'admin']);
+
 });
 
 

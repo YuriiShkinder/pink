@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Article;
 use App\Menu;
+use App\Portfolio;
 use App\User;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,11 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->bind('users',function ($value){
             return User::find($value);
+        });
+
+        $this->bind('portfolio',function ($value){
+
+            return Portfolio::where('alias',$value)->first();
         });
 
     }
