@@ -13,6 +13,8 @@ use App\Portfolio;
 use Gate;
 use Image;
 use Config;
+
+use File;
 class PortfoliosRepository extends Repository
 {
  public function __construct(Portfolio $portfolio)
@@ -82,8 +84,88 @@ class PortfoliosRepository extends Repository
             }
         }
 
+    }
+
+    public function updatePortfolio($request, $portfolio)
+    {
+        if (Gate::denies('edit', $this->model)) {
+            abort(403);
+        }
+
+        $data = $request->except('_token', 'img','_method','old_image');
 
 
+
+        if (empty($data)) {
+            return ['error' => 'нет данных'];
+        }
+
+        if (empty($data['alias'])) {
+            $data['alias'] = $this->transliterate($data['title']);
+        }
+
+        $result=$this->one($data['alias']);
+
+
+        if (isset($result) && ($result->id !== $portfolio->id)) {
+
+            $request->merge(['alias' => $data['alias']]);
+            $request->flash();
+            return ['error' => 'Занято'];
+        }
+
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+
+            if ($image->isValid()) {
+                $img=json_decode($portfolio->img,1);
+
+                foreach ($img as $item){
+                    File::delete(public_path('pink/images/projects/').$item);
+                }
+
+                $str = str_random(8);
+                $obj = new \stdClass();
+                $obj->mini = $str . '_mini.jpg';
+                $obj->max = $str . '_max.jpg';
+                $obj->path = $str . '.jpg';
+
+                $img = Image::make($image);
+
+
+                $img->fit(Config::get('settings.image')['width'], Config::get('settings.image')['heigth'])
+                    ->save(public_path() . '/' . env('THEME') . '/images/projects/' . $obj->path);
+                $img->fit(Config::get('settings.articles_img')['max']['width'], Config::get('settings.articles_img')['max']['heigth'])
+                    ->save(public_path() . '/' . env('THEME') . '/images/projects/' . $obj->max);
+                $img->fit(Config::get('settings.articles_img')['mini']['width'], Config::get('settings.articles_img')['mini']['heigth'])
+                    ->save(public_path() . '/' . env('THEME') . '/images/projects/' . $obj->mini);
+
+                $data['img'] = json_encode($obj);
+
+            }
+
+        }
+
+        $portfolio->fill($data);
+
+        if ($portfolio->update()) {
+            return ['status' => 'Материал обновлен'];
+        }
+    }
+
+
+    public function  deletePortolio($portfolio){
+        if(Gate::denies('edit',$portfolio)){
+            abort(403);
+        }
+        $img=json_decode($portfolio->img,1);
+        if($portfolio->delete()){
+            foreach ($img as $item){
+                File::delete(public_path('pink/images/projects/').$item);
+            }
+
+            return ['status'=>'Материал удален'];
+        }
     }
 
 }
